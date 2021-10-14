@@ -24,15 +24,15 @@ class CountryFilter(admin.SimpleListFilter):
     def queryset(self, request, queryset):
         """Возвращение соответствующего значения выбору."""
         if self.value() == '100м':
-            return queryset.filter(zone_radius=100)
+            return queryset.filter(zone_radius__range=[100, 199])
         if self.value() == '200м':
-            return queryset.filter(zone_radius=200)
+            return queryset.filter(zone_radius__range=[200, 299])
         if self.value() == '300м':
-            return queryset.filter(zone_radius=300)
+            return queryset.filter(zone_radius__range=[300, 399])
         if self.value() == '400м':
-            return queryset.filter(zone_radius=400)
+            return queryset.filter(zone_radius__range=[400, 499])
         if self.value() == '500м':
-            return queryset.filter(zone_radius=500)
+            return queryset.filter(zone_radius__range=[500, 599])
 
 
 class AdminWarningDevices(admin.ModelAdmin):
@@ -43,6 +43,7 @@ class AdminWarningDevices(admin.ModelAdmin):
     list_display_links = ("id", "name", )
     search_fields = ("name", "adress_location")
     list_filter = ("type_device", CountryFilter)
+    list_per_page = 5
 
 
 admin.site.register(WarningDevice, admin_class=AdminWarningDevices)
