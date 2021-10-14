@@ -1,15 +1,18 @@
-from django.contrib import admin
+"""Register your models here."""
 from catalog.models import WarningDevice
-from django.contrib.admin import SimpleListFilter
+
+from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
-# Register your models here.
 
 
 class CountryFilter(admin.SimpleListFilter):
+    """Class with custom user filter."""
+
     title = 'Радиус зоны звукопокрытия'
     parameter_name = 'zone_radius'
 
     def lookups(self, request, model_admin):
+        """Варианты выбора фильтрации."""
         return (
             ('100м', _('радиус 100м')),
             ('200м', _('радиус 200м')),
@@ -19,6 +22,7 @@ class CountryFilter(admin.SimpleListFilter):
         )
 
     def queryset(self, request, queryset):
+        """Возвращение соответствующего значения выбору."""
         if self.value() == '100м':
             return queryset.filter(zone_radius=100)
         if self.value() == '200м':
@@ -32,6 +36,8 @@ class CountryFilter(admin.SimpleListFilter):
 
 
 class AdminWarningDevices(admin.ModelAdmin):
+    """Adminclass for display in django-admin."""
+
     model = WarningDevice
     list_display = ("id", "name", "type_device", "zone_radius", )
     list_display_links = ("id", "name", )
